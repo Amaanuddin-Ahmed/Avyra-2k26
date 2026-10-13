@@ -1,44 +1,80 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { Navbar } from './components/ui/Navbar';
 import { BackgroundAtmosphere } from './components/ui/BackgroundAtmosphere';
+import { PetalEngine } from './components/ui/PetalEngine';
+import { CinematicIntro } from './components/sections/CinematicIntro';
 import { HeroSection } from './components/sections/HeroSection';
 import { WelcomeSection } from './components/sections/WelcomeSection';
 import { WatchRevealSection } from './components/sections/WatchRevealSection';
 import { ScheduleSection } from './components/sections/ScheduleSection';
 import { FacultySection } from './components/sections/FacultySection';
 import { CoordinatorsSection } from './components/sections/CoordinatorsSection';
+import { PreviousFreshersSection } from './components/sections/PreviousFreshersSection';
 import { FinalReminderSection } from './components/sections/FinalReminderSection';
 
 export const App: React.FC = () => {
+  const [hasEntered, setHasEntered] = useState(false);
+  const [showPetals, setShowPetals] = useState(false);
+
+  // Activate petals once user enters or scrolls
+  const handleEnterExperience = () => {
+    setHasEntered(true);
+    setTimeout(() => {
+      setShowPetals(true);
+    }, 1200);
+  };
+
+  // If user accesses directly via hash link (e.g. #schedule), bypass intro automatically
+  useEffect(() => {
+    if (window.location.hash) {
+      setHasEntered(true);
+      setShowPetals(true);
+    }
+  }, []);
+
   return (
-    <div className="relative min-h-screen bg-[#030817] text-[#F5F8FF] selection:bg-[#286BFF]/40 selection:text-white">
-      {/* Dynamic Ambient Background System */}
+    <div className="relative min-h-screen bg-[#020817] text-[#F5F8FF] selection:bg-[#286BFF]/40 selection:text-white">
+      {/* 1. CINEMATIC INTERACTIVE OPENING EXPERIENCE (Sparkle & Zoom-through-light) */}
+      <AnimatePresence>
+        {!hasEntered && (
+          <CinematicIntro onEnter={handleEnterExperience} />
+        )}
+      </AnimatePresence>
+
+      {/* 2. ACTIVE 4K COSMIC BACKGROUND SYSTEM */}
       <BackgroundAtmosphere />
 
-      {/* Global Navigation Header */}
+      {/* 3. CONTINUOUS CHERRY BLOSSOM PETAL PARTICLE ENGINE */}
+      <PetalEngine active={showPetals} />
+
+      {/* 4. GLOBAL NAVIGATION */}
       <Navbar />
 
-      {/* Structured Experiential Flow */}
+      {/* 5. NARRATIVE JOURNEY */}
       <main className="relative z-10 flex flex-col">
-        {/* 1. Cinematic Hero */}
+        {/* Cinematic Hero */}
         <HeroSection />
 
-        {/* 2 & 3. Sakura Blossom Tree, Falling Petals & Senior Welcome to MGIT */}
+        {/* Welcome to MGIT & Senior Invitation */}
         <WelcomeSection />
 
-        {/* 4. Luxury Watch & 09:30 AM Inauguration Reveal */}
+        {/* Real-time Watch & Inauguration Countdown */}
         <WatchRevealSection />
 
-        {/* 5. Signature Kinetic AVYRA Typography & 7 Glass Schedule Panels */}
+        {/* Crystalline AVYRA & 8-Item Schedule Timeline */}
         <ScheduleSection />
 
-        {/* 6. Honourable Guests (Principal, HOD, Faculty Coordinator) */}
+        {/* Our Beloved Faculty */}
         <FacultySection />
 
-        {/* 7. AVYRA Coordinators (Continuous Loop & Orbital Deck) */}
+        {/* 15 Coordinators Directory */}
         <CoordinatorsSection />
 
-        {/* 8. Final Reminder, Instagram Connection & Creator Credit */}
+        {/* Explore Our Last Year Freshers */}
+        <PreviousFreshersSection />
+
+        {/* Final Celebratory Reminder & Footer Credit */}
         <FinalReminderSection />
       </main>
     </div>

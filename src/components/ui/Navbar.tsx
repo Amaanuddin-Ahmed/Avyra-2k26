@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Calendar, Users, Instagram, Menu, X, ArrowUpRight } from 'lucide-react';
+import { Sparkles, Calendar, Users, Instagram, Menu, X, ArrowUpRight, Camera } from 'lucide-react';
 import { EVENT_DATA } from '../../data/event';
 
 export const Navbar: React.FC = () => {
@@ -16,15 +16,16 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Schedule', href: '#schedule', icon: Calendar },
-    { name: 'Guests', href: '#faculty', icon: Sparkles },
+    { name: 'Faculty', href: '#faculty', icon: Sparkles },
     { name: 'Coordinators', href: '#coordinators', icon: Users },
+    { name: 'Memories', href: '#gallery', icon: Camera },
   ];
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         scrolled 
-          ? 'py-3 bg-[#030817]/80 backdrop-blur-md border-b border-white/10 shadow-[0_4px_20px_rgba(0,8,30,0.5)]' 
+          ? 'py-3 bg-[#020817]/85 backdrop-blur-md border-b border-white/10 shadow-[0_4px_20px_rgba(0,8,30,0.5)]' 
           : 'py-5 bg-transparent'
       }`}
     >
@@ -82,7 +83,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#030817]/95 border-b border-white/10 backdrop-blur-xl px-4 pt-3 pb-6 animate-fadeIn">
+        <div className="md:hidden bg-[#020817]/95 border-b border-white/10 backdrop-blur-xl px-4 pt-3 pb-6 animate-fadeIn">
           <nav className="flex flex-col gap-2">
             {navLinks.map((link) => (
               <a

@@ -27,5 +27,5 @@ export const EVENT_DATA: EventInfo = {
   venue: "E-101",
   tagline: "Where It All Begins.",
   instagramUrl: "https://instagram.com/avyra.2026?vrfl=MmlleTF6dnV6cGR4",
-  creatorCredit: "Made by Amaann.. with love",
+  creatorCredit: "Made by Amaann... with love",
 };

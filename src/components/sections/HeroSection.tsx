@@ -239,7 +239,7 @@ export const HeroSection: React.FC = () => {
           el?.scrollIntoView({ behavior: 'smooth' });
         }}
       >
-        <span className="text-xs uppercase tracking-widest font-medium">Scroll to explore</span>
+        <span className="text-xs uppercase tracking-widest font-medium">Discover AVYRA</span>
         <ChevronDown size={18} className="animate-bounce text-ice" />
       </motion.div>
     </section>

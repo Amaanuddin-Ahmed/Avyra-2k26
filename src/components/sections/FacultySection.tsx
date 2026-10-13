@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { GlassCard } from '../ui/GlassCard';
 import { DiamondStar } from '../ui/DiamondStar';
 import { FACULTY_MEMBERS } from '../../data/faculty';
-import { Award, GraduationCap, UserCheck } from 'lucide-react';
+import { GraduationCap, Award, UserCheck, Shield } from 'lucide-react';
 
 export const FacultySection: React.FC = () => {
   const roleIcons = [GraduationCap, Award, UserCheck];
@@ -11,7 +11,7 @@ export const FacultySection: React.FC = () => {
   return (
     <section 
       id="faculty" 
-      className="relative min-h-[80vh] py-28 px-4 sm:px-6 lg:px-8 z-10 overflow-hidden flex flex-col justify-center"
+      className="relative min-h-[75vh] py-24 px-4 sm:px-6 lg:px-8 z-10 overflow-hidden flex flex-col justify-center"
     >
       {/* Background Radial Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-electric/10 rounded-full blur-[140px] pointer-events-none" />
@@ -19,7 +19,7 @@ export const FacultySection: React.FC = () => {
       <div className="max-w-6xl mx-auto w-full relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-14">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -28,7 +28,7 @@ export const FacultySection: React.FC = () => {
           >
             <DiamondStar size={16} />
             <span className="text-xs sm:text-sm font-bold tracking-[0.35em] uppercase text-ice">
-              Distinguished Leadership
+              Distinguished Leadership & Mentors
             </span>
             <DiamondStar size={16} />
           </motion.div>
@@ -40,7 +40,7 @@ export const FacultySection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold text-luminous tracking-tight"
           >
-            Honourable <span className="metallic-text">Guests</span>
+            Our Beloved <span className="metallic-text">Faculty</span>
           </motion.h2>
 
           <motion.p
@@ -48,13 +48,13 @@ export const FacultySection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-4 text-base sm:text-xl text-silver-light font-light"
+            className="mt-3 text-base sm:text-xl text-silver-light font-light"
           >
-            Guiding the vision of MGIT and inspiring the next generation of engineers and leaders.
+            Guiding the vision of MGIT, nurturing the department of CSE 1, and inspiring our newest engineers.
           </motion.p>
         </div>
 
-        {/* 3 Faculty Cards Grid (Desktop 3 columns, Tablet/Mobile responsive stack) */}
+        {/* 3 Faculty Cards Grid (Principal, HOD, Faculty Coordinator) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
           {FACULTY_MEMBERS.map((faculty, index) => {
             const Icon = roleIcons[index % roleIcons.length];
@@ -72,18 +72,18 @@ export const FacultySection: React.FC = () => {
                   glow={index === 0}
                   className="p-8 sm:p-10 h-full flex flex-col items-center text-center group border-white/10 hover:border-electric/50"
                 >
-                  {/* Portrait Placeholder with Dignified Crest Avatar */}
+                  {/* Portrait Placeholder Frame */}
                   <div className="relative mb-6">
-                    <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-gradient-to-tr from-electric via-white/40 to-ice shadow-[0_0_25px_rgba(40,107,255,0.4)] group-hover:shadow-[0_0_35px_rgba(40,107,255,0.65)] transition-shadow">
-                      <div className="w-full h-full rounded-full bg-gradient-to-b from-[#0A1F48] to-[#030817] flex flex-col items-center justify-center border border-white/20 overflow-hidden relative">
+                    <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl p-1 bg-gradient-to-tr from-electric via-white/40 to-ice shadow-[0_0_25px_rgba(40,107,255,0.4)] group-hover:shadow-[0_0_35px_rgba(40,107,255,0.65)] transition-shadow">
+                      <div className="w-full h-full rounded-[14px] bg-gradient-to-b from-[#0A1F48] to-[#020817] flex flex-col items-center justify-center border border-white/20 overflow-hidden relative">
                         <Icon size={38} className="text-ice-light group-hover:scale-110 transition-transform duration-300" />
-                        <div className="absolute bottom-1 text-[9px] uppercase tracking-widest text-silver/70 font-semibold">
-                          MGIT
+                        <div className="absolute bottom-1 text-[8px] uppercase tracking-widest text-silver/70 font-semibold flex items-center gap-1">
+                          <Shield size={10} className="text-electric" />
+                          <span>MGIT</span>
                         </div>
                       </div>
                     </div>
-                    {/* Small Accent Star */}
-                    <DiamondStar size={16} className="absolute top-1 right-1" />
+                    <DiamondStar size={16} className="absolute -top-1 -right-1" />
                   </div>
 
                   {/* Role Badge */}
@@ -91,12 +91,12 @@ export const FacultySection: React.FC = () => {
                     {faculty.role}
                   </div>
 
-                  {/* Name (Large, Prominent, Editorial) */}
+                  {/* Name */}
                   <h3 className="font-serif text-xl sm:text-2xl font-bold text-white tracking-wide mt-1 group-hover:text-ice-light transition-colors">
                     {faculty.name}
                   </h3>
 
-                  {/* Department / Institution */}
+                  {/* Department */}
                   {faculty.department && (
                     <p className="mt-3 text-xs sm:text-sm text-silver font-normal leading-relaxed">
                       {faculty.department}
@@ -106,7 +106,7 @@ export const FacultySection: React.FC = () => {
                   {/* Dignified Footer Strip */}
                   <div className="mt-auto pt-6 w-full border-t border-white/10 flex items-center justify-center gap-2 text-[11px] text-silver/70 tracking-widest uppercase">
                     <span className="w-1.5 h-1.5 rounded-full bg-electric" />
-                    <span>Honourable Guest of Honour</span>
+                    <span>Honourable Mentor of CSE 1</span>
                   </div>
                 </GlassCard>
               </motion.div>
