@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { GlassCard } from '../ui/GlassCard';
 import { DiamondStar } from '../ui/DiamondStar';
@@ -18,39 +18,48 @@ import {
 
 export const ScheduleSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const timelineCardsRef = useRef<HTMLDivElement>(null);
 
-  // Scroll progress through the entire schedule timeline
+  // Scroll progress through the schedule cards area specifically (not the header!)
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: timelineCardsRef,
     offset: ["start center", "end end"]
   });
 
-  // Gliding docking positions for Crystalline AVYRA:
-  // Starts left (Event 1), moves right (Event 2), left (Event 3), right (Event 4),
-  // left (Event 5), right (Event 6), left (Event 7), right (Event 8), then docks to corner!
+  // 3D Aeroplane-like flight scrollytelling path:
+  // Glides and banks (pitch, roll, lateral yaw) down the timeline decks
   const xAvyra = useTransform(
     scrollYProgress,
-    [0, 0.12, 0.25, 0.38, 0.5, 0.62, 0.75, 0.88, 1],
-    ["-28%", "28%", "-26%", "26%", "-24%", "24%", "-22%", "22%", "38%"]
+    [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1],
+    ["-22vw", "22vw", "-18vw", "18vw", "-15vw", "15vw", "-10vw", "12vw"]
   );
 
-  const rotateAvyra = useTransform(
+  // Aeroplane banking roll (rotateZ) as it turns corners
+  const rollAvyra = useTransform(
     scrollYProgress,
-    [0, 0.25, 0.5, 0.75, 1],
-    [-4, 3, -3, 2, 0]
+    [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1],
+    [-14, 14, -12, 12, -10, 10, -6, 0]
   );
 
+  // Aeroplane pitch (rotateX) diving down through the decks
+  const pitchAvyra = useTransform(
+    scrollYProgress,
+    [0, 0.5, 0.85, 1],
+    [18, 5, -8, 0]
+  );
+
+  // Depth scale and flight altitude
   const scaleAvyra = useTransform(
     scrollYProgress,
-    [0, 0.88, 1],
-    [1, 0.95, 0.65] // Final pearl docking scales down to 0.65
+    [0, 0.2, 0.7, 0.9, 1],
+    [0.9, 1.05, 0.95, 0.85, 0.68]
   );
 
-  // Pearl glow transition at the finale
+  // Pearlescent shimmer when reaching the final deck
   const pearlGlow = useTransform(
     scrollYProgress,
     [0.85, 0.95, 1],
-    [0, 0.7, 1]
+    [0, 0.75, 1]
   );
 
   const iconMap = {
@@ -68,41 +77,12 @@ export const ScheduleSection: React.FC = () => {
     <section 
       id="schedule" 
       ref={containerRef}
-      className="relative min-h-screen pt-12 pb-28 px-4 sm:px-6 lg:px-8 z-10 overflow-hidden"
+      className="relative min-h-screen pt-28 pb-32 px-4 sm:px-6 lg:px-8 z-10 overflow-hidden"
     >
-      {/* FLOATING CRYSTALLINE AVYRA TYPOGRAPHY (Docking Beside Timeline Cards) */}
-      <div 
-        className="pointer-events-none sticky top-28 left-0 right-0 w-full flex items-center justify-center select-none z-0 py-2 overflow-hidden"
-        aria-hidden="true"
-      >
-        <motion.div
-          style={{ 
-            x: xAvyra, 
-            rotate: rotateAvyra, 
-            scale: scaleAvyra 
-          }}
-          className="relative transition-all duration-300"
-        >
-          {/* Crystalline Glass Display Text */}
-          <div className="relative px-6 py-2 rounded-3xl bg-white/[0.03] backdrop-blur-sm border border-white/10 shadow-[0_0_35px_rgba(40,107,255,0.25)]">
-            <span className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-white via-ice-light to-electric-glow drop-shadow-[0_4px_16px_rgba(40,107,255,0.6)]">
-              AVYRA
-            </span>
-
-            {/* Pearlescent Shimmer Overlay for Finale */}
-            <motion.div 
-              style={{ opacity: pearlGlow }}
-              className="absolute inset-0 rounded-3xl bg-gradient-to-r from-amber-100/20 via-pink-200/30 to-cyan-200/30 blur-md pointer-events-none"
-            />
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Main Content Layout */}
-      <div className="max-w-5xl mx-auto relative z-10 mt-6">
+      <div className="max-w-5xl mx-auto relative z-10">
         
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        {/* SECTION HEADER - Cleanly isolated with ample margin so nothing overlaps it! */}
+        <div className="text-center max-w-2xl mx-auto mb-20 sm:mb-24 relative z-20">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -123,7 +103,7 @@ export const ScheduleSection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold text-luminous tracking-tight"
           >
-            Official Event <span className="metallic-text">Schedule</span>
+            OFFICIAL EVENT <span className="metallic-text">SCHEDULE</span>
           </motion.h2>
 
           <motion.p
@@ -131,25 +111,62 @@ export const ScheduleSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-3 text-base sm:text-xl text-silver-light font-light"
+            className="mt-4 text-base sm:text-xl text-silver-light font-light"
           >
             A meticulously choreographed itinerary of joy, performances, ceremonies, and refreshments.
           </motion.p>
         </div>
 
-        {/* Central Connecting Timeline Line */}
-        <div className="relative">
-          {/* Vertical Glowing Trail */}
+        {/* TIMELINE DECK CONTAINER - Contains the 3D Sticky Flying Element & Timeline Cards */}
+        <div ref={timelineCardsRef} className="relative">
+          
+          {/* STICKY 3D SCROLLYTELLING "AVYRA" AEROPLANE-LIKE ELEMENT */}
+          {/* Position sticky below the header, gliding down through the schedule decks */}
           <div 
-            className="absolute left-6 md:left-1/2 top-4 bottom-4 w-0.5 md:-translate-x-1/2 bg-gradient-to-b from-electric via-ice to-electric/30 shadow-[0_0_12px_rgba(40,107,255,0.8)]" 
+            className="pointer-events-none sticky top-36 sm:top-40 left-0 right-0 w-full flex items-center justify-center select-none z-30 py-2 overflow-hidden"
+            style={{ perspective: 1000 }}
+            aria-hidden="true"
+          >
+            <motion.div
+              style={{ 
+                x: xAvyra, 
+                rotateZ: rollAvyra, 
+                rotateX: pitchAvyra,
+                scale: scaleAvyra 
+              }}
+              className="relative transition-all duration-150"
+            >
+              {/* Beveled Crystalline Metallic Typography (Exact Poster Aesthetics) */}
+              <div className="relative px-6 sm:px-8 py-2.5 rounded-3xl bg-[#06132D]/70 backdrop-blur-md border border-electric/40 shadow-[0_10px_35px_rgba(40,107,255,0.4)] flex items-center justify-center">
+                
+                {/* Luminous Diamond Flare on letter vertex */}
+                <DiamondStar size={16} className="absolute -top-1.5 left-4" />
+                <DiamondStar size={14} className="absolute -bottom-1.5 right-6" />
+
+                <span className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-widest uppercase metallic-text drop-shadow-[0_4px_20px_rgba(40,107,255,0.8)]">
+                  AVYRA
+                </span>
+
+                {/* Shimmering Pearlescent Glow when completing the flight past deck 8 */}
+                <motion.div 
+                  style={{ opacity: pearlGlow }}
+                  className="absolute inset-0 rounded-3xl bg-gradient-to-r from-amber-200/25 via-pink-300/35 to-cyan-300/35 blur-md pointer-events-none"
+                />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Central Connecting Glowing Timeline Line */}
+          <div 
+            className="absolute left-6 md:left-1/2 top-6 bottom-6 w-0.5 md:-translate-x-1/2 bg-gradient-to-b from-electric via-ice to-electric/30 shadow-[0_0_12px_rgba(40,107,255,0.8)] z-10" 
             aria-hidden="true"
           />
 
-          {/* Schedule Items List */}
-          <div className="space-y-10 sm:space-y-14">
+          {/* Schedule Deck Items List */}
+          <div className="space-y-12 sm:space-y-16 relative z-20">
             {SCHEDULE_ITEMS.map((item, index) => {
               const Icon = iconMap[item.iconName];
-              const isEven = index % 2 === 1; // Alternating 0-indexed
+              const isEven = index % 2 === 1;
 
               return (
                 <motion.div
@@ -157,7 +174,7 @@ export const ScheduleSection: React.FC = () => {
                   initial={{ opacity: 0, y: 35 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.65, delay: index * 0.06 }}
+                  transition={{ duration: 0.65, delay: 0.05 }}
                   className={`relative flex flex-col md:flex-row items-start ${
                     isEven ? 'md:flex-row-reverse' : ''
                   }`}
@@ -172,7 +189,7 @@ export const ScheduleSection: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Card Container (Alternating on desktop, offset on mobile) */}
+                  {/* Card Container */}
                   <div className={`w-full md:w-1/2 pl-16 md:pl-0 ${
                     isEven ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left'
                   }`}>
@@ -229,7 +246,7 @@ export const ScheduleSection: React.FC = () => {
                     </GlassCard>
                   </div>
 
-                  {/* Empty Spacer Column for Desktop Grid Alternation */}
+                  {/* Empty Spacer Column for Desktop Alternation */}
                   <div className="hidden md:block md:w-1/2" />
                 </motion.div>
               );

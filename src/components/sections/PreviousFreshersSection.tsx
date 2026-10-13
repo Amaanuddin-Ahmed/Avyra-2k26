@@ -1,24 +1,25 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { GlassCard } from '../ui/GlassCard';
 import { DiamondStar } from '../ui/DiamondStar';
-import { Sparkles, Camera, ArrowUpRight, FolderHeart, Calendar } from 'lucide-react';
+import { Sparkles, FolderHeart, ArrowUpRight } from 'lucide-react';
 
 export const PreviousFreshersSection: React.FC = () => {
   const DRIVE_FOLDER_URL = "https://drive.google.com/drive/folders/1R9VUv49iLd3bsOPnFomaB88PQBQcvYpv?usp=sharing";
 
-  // Curated showcase memory highlight cards
-  const memoryCards = [
-    { title: "Stage Euphoria", tag: "Performances", desc: "Electrifying dance choreography and stage applause." },
-    { title: "Crowd Melodies", tag: "Singing", desc: "Acoustic anthems echoing across MGIT halls." },
-    { title: "The Welcoming Roses", tag: "Tradition", desc: "Heartfelt smiles welcoming every fresher with flowers." },
-    { title: "Batch Unity", tag: "Memories", desc: "Seniors and juniors united as one department." },
-    { title: "Grand Cake Cutting", tag: "Celebration", desc: "A sweet ceremonial kick-off to lifelong college years." },
-    { title: "Candid Laughter", tag: "Behind the Scenes", desc: "Spontaneous joy captured in timeless frames." },
+  // Real continuous stream of photos
+  const eventImages = [
+    { id: 1, src: "/images/gallery/event-1.svg", alt: "Freshers Celebration 01" },
+    { id: 2, src: "/images/gallery/event-2.svg", alt: "Freshers Celebration 02" },
+    { id: 3, src: "/images/gallery/event-3.svg", alt: "Freshers Celebration 03" },
+    { id: 4, src: "/images/gallery/event-4.svg", alt: "Freshers Celebration 04" },
+    { id: 5, src: "/images/gallery/event-5.svg", alt: "Freshers Celebration 05" },
+    { id: 6, src: "/images/gallery/event-6.svg", alt: "Freshers Celebration 06" },
+    { id: 7, src: "/images/gallery/event-7.svg", alt: "Freshers Celebration 07" },
+    { id: 8, src: "/images/gallery/event-8.svg", alt: "Freshers Celebration 08" },
   ];
 
-  // Duplicate for seamless infinite marquee loop
-  const marqueeCards = [...memoryCards, ...memoryCards];
+  // Duplicate for seamless infinite continuous loop
+  const continuousStream = [...eventImages, ...eventImages];
 
   return (
     <section 
@@ -26,12 +27,12 @@ export const PreviousFreshersSection: React.FC = () => {
       className="relative min-h-[80vh] py-24 px-4 sm:px-6 lg:px-8 z-10 overflow-hidden flex flex-col justify-center"
     >
       {/* Ambient background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[550px] bg-electric/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[550px] bg-electric/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
+        <div className="text-center max-w-3xl mx-auto mb-12">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -64,94 +65,107 @@ export const PreviousFreshersSection: React.FC = () => {
           >
             Unforgettable memories, boundless energy, and the legacy of CSE 1.
           </motion.p>
-
-          {/* Primary Action Button: Explore Full Drive */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-8 flex items-center justify-center"
-          >
-            <a
-              href={DRIVE_FOLDER_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-bold uppercase tracking-wider text-white bg-gradient-to-r from-electric via-electric-glow to-electric hover:shadow-electric-glow hover:scale-105 transition-all shadow-[0_0_25px_rgba(40,107,255,0.45)]"
-            >
-              <FolderHeart size={18} />
-              <span>Explore Full Drive</span>
-              <ArrowUpRight size={16} />
-            </a>
-          </motion.div>
         </div>
 
-        {/* CONTINUOUS PHOTO MARQUEE STREAM */}
+        {/* CONTINUOUS PHOTO STREAM (Infinite marquee without categories, fast pace like coordinators) */}
         <div className="relative w-full overflow-hidden py-4">
           {/* Edge Gradient Fades */}
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-[#020817] to-transparent z-20" />
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-[#020817] to-transparent z-20" />
 
           <div className="flex items-center gap-6 w-max animate-marquee hover:[animation-play-state:paused]">
-            {marqueeCards.map((card, idx) => (
+            {continuousStream.map((item, idx) => (
               <div 
-                key={`${card.title}-${idx}`}
-                className="w-72 sm:w-80 shrink-0 group rounded-2xl"
+                key={`${item.id}-${idx}`}
+                className="w-72 sm:w-88 shrink-0 group rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10 hover:border-electric/70 transition-all duration-300"
               >
-                <GlassCard 
-                  glow={idx % 3 === 0}
-                  className="p-6 flex flex-col h-full border-white/10 group-hover:border-electric/60"
-                >
-                  {/* Photo Frame Container */}
-                  <div className="relative mb-4 w-full aspect-[16/10] rounded-xl overflow-hidden bg-gradient-to-br from-[#0A1F48] to-[#020817] border border-white/10 flex flex-col items-center justify-center p-4">
-                    <Camera size={36} className="text-ice-light/60 group-hover:scale-110 group-hover:text-ice transition-transform" />
-                    <span className="text-[11px] font-semibold text-silver/70 tracking-wider uppercase mt-2">
-                      {card.tag}
-                    </span>
-                    <div className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-[#020817]/80 text-[9px] font-mono text-ice border border-white/10">
-                      CSE 1 Archives
-                    </div>
-                  </div>
-
-                  <span className="text-xs font-semibold uppercase tracking-wider text-ice mb-1 block">
-                    {card.tag}
-                  </span>
-
-                  <h3 className="font-serif text-xl font-bold text-white tracking-wide group-hover:text-ice-light transition-colors">
-                    {card.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-silver mt-2 leading-relaxed">
-                    {card.desc}
-                  </p>
-                </GlassCard>
+                <div className="relative aspect-[16/11] w-full overflow-hidden bg-[#0A1F48]">
+                  <img 
+                    src={item.src} 
+                    alt={item.alt}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  {/* Subtle glass reflection edge */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#020817]/70 via-transparent to-transparent pointer-events-none" />
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Secondary Highlights Banner: AVYRA 2K26 Highlights Gallery — Coming Soon! */}
+        {/* BELOW PHOTO STREAM: VIEW FULL DRIVE BUTTON */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.25 }}
+          className="mt-10 flex items-center justify-center"
+        >
+          <a
+            href={DRIVE_FOLDER_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-sm font-bold uppercase tracking-wider text-white bg-gradient-to-r from-electric via-electric-glow to-electric hover:shadow-electric-glow hover:scale-105 transition-all shadow-[0_0_25px_rgba(40,107,255,0.45)]"
+          >
+            <FolderHeart size={18} />
+            <span>View Full Drive</span>
+            <ArrowUpRight size={16} />
+          </a>
+        </motion.div>
+
+        {/* UPCOMING AVYRA 2K26 HIGHLIGHTS DIVISION WITH COLORFUL GLOWING SVG BORDER */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.85, delay: 0.2 }}
-          className="mt-14 max-w-3xl mx-auto"
+          className="mt-16 max-w-3xl mx-auto relative rounded-3xl p-1 overflow-hidden"
         >
-          <GlassCard glow className="p-6 sm:p-8 text-center border-electric/40 bg-gradient-to-r from-[#06132D]/90 via-[#0A1F48]/80 to-[#06132D]/90">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-electric/20 border border-electric/40 text-ice text-xs font-semibold tracking-wider uppercase mb-3">
-              <Sparkles size={13} />
-              <span>Future Spotlight</span>
+          {/* Animated Colorful Glowing SVG Border */}
+          <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-pink-500 via-cyan-400 to-electric animate-spin-very-slow blur-sm opacity-80" />
+          
+          <div className="relative rounded-[22px] bg-gradient-to-r from-[#06132D] via-[#0A1F48] to-[#06132D] p-6 sm:p-10 text-center border border-white/20 shadow-[0_0_40px_rgba(56,189,248,0.35)] backdrop-blur-xl">
+            {/* Colorful SVG Border Accent */}
+            <svg 
+              className="absolute inset-0 w-full h-full pointer-events-none rounded-[22px]" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect 
+                x="2" 
+                y="2" 
+                width="99%" 
+                height="98%" 
+                rx="20" 
+                fill="none" 
+                stroke="url(#rainbowGlow)" 
+                strokeWidth="2" 
+                strokeDasharray="16 8"
+                className="animate-pulse-slow"
+              />
+              <defs>
+                <linearGradient id="rainbowGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#F2A7D4" />
+                  <stop offset="40%" stopColor="#38bdf8" />
+                  <stop offset="70%" stopColor="#286BFF" />
+                  <stop offset="100%" stopColor="#F2A7D4" />
+                </linearGradient>
+              </defs>
+            </svg>
+
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gradient-to-r from-pink-500/20 to-cyan-500/20 border border-cyan-400/50 text-cyan-200 text-xs font-bold tracking-widest uppercase mb-3 shadow-[0_0_15px_rgba(56,189,248,0.4)]">
+              <Sparkles size={14} className="text-cyan-300" />
+              <span>UPCOMING EVENT HIGHLIGHTS</span>
             </div>
 
-            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-wide">
+            <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-wide">
               AVYRA 2K26 Highlights Gallery — Coming Soon!
             </h3>
 
-            <p className="mt-2 text-sm sm:text-base text-silver-light font-light">
+            <p className="mt-3 text-base sm:text-lg text-silver-light font-light max-w-xl mx-auto">
               “Capturing today's memories for tomorrow.”
             </p>
-          </GlassCard>
+          </div>
         </motion.div>
 
       </div>
