@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="40%" stop-color="#8EBFFF"/>
+      <stop offset="80%" stop-color="#286BFF"/>
+      <stop offset="100%" stop-color="#030817" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="50" cy="50" r="45" fill="#030817"/>
+  <circle cx="50" cy="50" r="30" fill="url(#starGlow)" opacity="0.6"/>
+  <!-- 4-point diamond star flare -->
+  <path d="M50 10 Q50 45 15 50 Q50 55 50 90 Q50 55 85 50 Q50 45 50 10 Z" fill="#F5F8FF"/>
+  <circle cx="50" cy="50" r="4" fill="#FFFFFF"/>
+</svg>

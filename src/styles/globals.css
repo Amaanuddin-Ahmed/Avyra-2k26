@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --midnight-bg: #030817;
+  --navy-deep: #06132D;
+  --navy-dark: #0A1F48;
+  --electric-blue: #286BFF;
+  --ice-blue: #8EBFFF;
+  --luminous-white: #F5F8FF;
+  --muted-silver: #B8C7E4;
+  --blossom-pink: #F2A7D4;
+
+  --glass-bg: rgba(6, 19, 45, 0.55);
+  --glass-border: rgba(142, 191, 255, 0.2);
+  --glass-highlight: rgba(255, 255, 255, 0.12);
+  --glass-blur: 16px;
+}
+
+@layer base {
+  html {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background-color: var(--midnight-bg);
+    color: var(--luminous-white);
+  }
+
+  body {
+    background-color: var(--midnight-bg);
+    overflow-x: hidden;
+  }
+}
+
+/* Glass UI Component Layer */
+.glass-panel {
+  background: linear-gradient(135deg, rgba(6, 19, 45, 0.65) 0%, rgba(10, 31, 72, 0.4) 100%);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-panel-glow {
+  background: linear-gradient(135deg, rgba(6, 19, 45, 0.75) 0%, rgba(10, 31, 72, 0.5) 100%);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(40, 107, 255, 0.35);
+  box-shadow: 0 0 25px -5px rgba(40, 107, 255, 0.3), inset 0 1px 2px 0 rgba(142, 191, 255, 0.2);
+}
+
+/* Metallic Text Effect matching AVYRA Poster */
+.metallic-text {
+  background: linear-gradient(180deg, #FFFFFF 0%, #E2EDFF 25%, #8EBFFF 65%, #286BFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 10px rgba(40, 107, 255, 0.5));
+}
+
+.metallic-text-silver {
+  background: linear-gradient(135deg, #FFFFFF 0%, #D8E5F8 30%, #9EB8E0 70%, #FFFFFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(184, 199, 228, 0.3));
+}
+
+/* Spotlight Beam Gradient */
+.spotlight-beam-left {
+  background: linear-gradient(125deg, rgba(40, 107, 255, 0.35) 0%, rgba(142, 191, 255, 0.12) 30%, transparent 70%);
+}
+
+.spotlight-beam-right {
+  background: linear-gradient(235deg, rgba(40, 107, 255, 0.35) 0%, rgba(142, 191, 255, 0.12) 30%, transparent 70%);
+}
+
+/* Hide scrollbar for continuous marquee while allowing touch swipe */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Reduced motion considerations */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
