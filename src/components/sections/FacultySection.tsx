@@ -38,7 +38,7 @@ export const FacultySection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold text-luminous tracking-tight"
           >
-            Our Beloved <span className="metallic-text">Faculty</span>
+            MEET OUR <span className="metallic-text">GUESTS OF HONORS</span>
           </motion.h2>
 
           <motion.p

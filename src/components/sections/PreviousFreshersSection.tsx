@@ -6,20 +6,22 @@ import { Sparkles, FolderHeart, ArrowUpRight } from 'lucide-react';
 export const PreviousFreshersSection: React.FC = () => {
   const DRIVE_FOLDER_URL = "https://drive.google.com/drive/folders/1R9VUv49iLd3bsOPnFomaB88PQBQcvYpv?usp=sharing";
 
-  // Real continuous stream of photos
-  const eventImages = [
-    { id: 1, src: "/images/gallery/event-1.svg", alt: "Freshers Celebration 01" },
-    { id: 2, src: "/images/gallery/event-2.svg", alt: "Freshers Celebration 02" },
-    { id: 3, src: "/images/gallery/event-3.svg", alt: "Freshers Celebration 03" },
-    { id: 4, src: "/images/gallery/event-4.svg", alt: "Freshers Celebration 04" },
-    { id: 5, src: "/images/gallery/event-5.svg", alt: "Freshers Celebration 05" },
-    { id: 6, src: "/images/gallery/event-6.svg", alt: "Freshers Celebration 06" },
-    { id: 7, src: "/images/gallery/event-7.svg", alt: "Freshers Celebration 07" },
-    { id: 8, src: "/images/gallery/event-8.svg", alt: "Freshers Celebration 08" },
+  // Real continuous stream of photos extracted from the actual Google Drive folder
+  const drivePhotos = [
+    { id: 1, src: "/images/gallery/drive-photo-1.jpg", alt: "Freshers Celebration Highlight 01" },
+    { id: 2, src: "/images/gallery/drive-photo-2.jpg", alt: "Freshers Celebration Highlight 02" },
+    { id: 3, src: "/images/gallery/drive-photo-3.jpg", alt: "Freshers Celebration Highlight 03" },
+    { id: 4, src: "/images/gallery/drive-photo-4.jpg", alt: "Freshers Celebration Highlight 04" },
+    { id: 5, src: "/images/gallery/drive-photo-5.jpg", alt: "Freshers Celebration Highlight 05" },
+    { id: 6, src: "/images/gallery/drive-photo-6.jpg", alt: "Freshers Celebration Highlight 06" },
+    { id: 7, src: "/images/gallery/drive-photo-7.jpg", alt: "Freshers Celebration Highlight 07" },
+    { id: 8, src: "/images/gallery/drive-photo-8.jpg", alt: "Freshers Celebration Highlight 08" },
+    { id: 9, src: "/images/gallery/drive-photo-9.jpg", alt: "Freshers Celebration Highlight 09" },
+    { id: 10, src: "/images/gallery/drive-photo-10.jpg", alt: "Freshers Celebration Highlight 10" },
   ];
 
   // Duplicate for seamless infinite continuous loop
-  const continuousStream = [...eventImages, ...eventImages];
+  const continuousStream = [...drivePhotos, ...drivePhotos];
 
   return (
     <section 
