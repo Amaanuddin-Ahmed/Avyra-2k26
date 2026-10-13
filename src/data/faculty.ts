@@ -3,7 +3,7 @@ export interface FacultyMember {
   name: string;
   role: string;
   department?: string;
-  image?: string;
+  image: string;
 }
 
 export const FACULTY_MEMBERS: FacultyMember[] = [
@@ -24,7 +24,7 @@ export const FACULTY_MEMBERS: FacultyMember[] = [
   {
     id: "fac-3",
     name: "R. Mohan Krishna",
-    role: "Faculty Coordinator",
+    role: "Beloved Faculty Coordinator",
     department: "Department of Computer Science & Engineering",
     image: "/images/faculty/coordinator.jpg",
   },

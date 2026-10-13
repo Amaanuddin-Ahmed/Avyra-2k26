@@ -3,11 +3,9 @@ import { motion } from 'framer-motion';
 import { GlassCard } from '../ui/GlassCard';
 import { DiamondStar } from '../ui/DiamondStar';
 import { FACULTY_MEMBERS } from '../../data/faculty';
-import { GraduationCap, Award, UserCheck, Shield } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 export const FacultySection: React.FC = () => {
-  const roleIcons = [GraduationCap, Award, UserCheck];
-
   return (
     <section 
       id="faculty" 
@@ -28,7 +26,7 @@ export const FacultySection: React.FC = () => {
           >
             <DiamondStar size={16} />
             <span className="text-xs sm:text-sm font-bold tracking-[0.35em] uppercase text-ice">
-              Distinguished Leadership & Mentors
+              Distinguished Leadership
             </span>
             <DiamondStar size={16} />
           </motion.div>
@@ -50,15 +48,13 @@ export const FacultySection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mt-3 text-base sm:text-xl text-silver-light font-light"
           >
-            Guiding the vision of MGIT, nurturing the department of CSE 1, and inspiring our newest engineers.
+            Guiding the vision of MGIT and inspiring the department of CSE 1.
           </motion.p>
         </div>
 
-        {/* 3 Faculty Cards Grid (Principal, HOD, Faculty Coordinator) */}
+        {/* 3 Faculty Cards Grid (Principal, HOD, Beloved Faculty Coordinator) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
           {FACULTY_MEMBERS.map((faculty, index) => {
-            const Icon = roleIcons[index % roleIcons.length];
-
             return (
               <motion.div
                 key={faculty.id}
@@ -72,18 +68,18 @@ export const FacultySection: React.FC = () => {
                   glow={index === 0}
                   className="p-8 sm:p-10 h-full flex flex-col items-center text-center group border-white/10 hover:border-electric/50"
                 >
-                  {/* Portrait Placeholder Frame */}
+                  {/* Portrait Container with Actual Photo */}
                   <div className="relative mb-6">
-                    <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl p-1 bg-gradient-to-tr from-electric via-white/40 to-ice shadow-[0_0_25px_rgba(40,107,255,0.4)] group-hover:shadow-[0_0_35px_rgba(40,107,255,0.65)] transition-shadow">
-                      <div className="w-full h-full rounded-[14px] bg-gradient-to-b from-[#0A1F48] to-[#020817] flex flex-col items-center justify-center border border-white/20 overflow-hidden relative">
-                        <Icon size={38} className="text-ice-light group-hover:scale-110 transition-transform duration-300" />
-                        <div className="absolute bottom-1 text-[8px] uppercase tracking-widest text-silver/70 font-semibold flex items-center gap-1">
-                          <Shield size={10} className="text-electric" />
-                          <span>MGIT</span>
-                        </div>
+                    <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-2xl p-1 bg-gradient-to-tr from-electric via-white/40 to-ice shadow-[0_0_25px_rgba(40,107,255,0.4)] group-hover:shadow-[0_0_35px_rgba(40,107,255,0.65)] transition-shadow">
+                      <div className="w-full h-full rounded-[14px] bg-[#0A1F48] overflow-hidden border border-white/20 relative shadow-inner">
+                        <img 
+                          src={faculty.image} 
+                          alt={faculty.name} 
+                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                        />
                       </div>
                     </div>
-                    <DiamondStar size={16} className="absolute -top-1 -right-1" />
+                    <DiamondStar size={18} className="absolute -top-1 -right-1" />
                   </div>
 
                   {/* Role Badge */}
@@ -103,10 +99,10 @@ export const FacultySection: React.FC = () => {
                     </p>
                   )}
 
-                  {/* Dignified Footer Strip */}
-                  <div className="mt-auto pt-6 w-full border-t border-white/10 flex items-center justify-center gap-2 text-[11px] text-silver/70 tracking-widest uppercase">
-                    <span className="w-1.5 h-1.5 rounded-full bg-electric" />
-                    <span>Honourable Mentor of CSE 1</span>
+                  {/* Clean Bottom Accent */}
+                  <div className="mt-auto pt-6 w-full border-t border-white/10 flex items-center justify-center gap-2 text-[11px] text-ice tracking-widest uppercase font-semibold">
+                    <Shield size={12} className="text-electric" />
+                    <span>MGIT Leadership</span>
                   </div>
                 </GlassCard>
               </motion.div>
