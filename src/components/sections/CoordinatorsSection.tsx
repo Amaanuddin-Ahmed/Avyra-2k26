@@ -113,7 +113,7 @@ export const CoordinatorsSection: React.FC = () => {
 
             <div 
               className={`flex items-center gap-6 w-max ${
-                isPaused ? '' : 'animate-[marquee_38s_linear_infinite]'
+                isPaused ? '' : 'animate-marquee'
               }`}
               style={{
                 animationPlayState: isPaused ? 'paused' : 'running',

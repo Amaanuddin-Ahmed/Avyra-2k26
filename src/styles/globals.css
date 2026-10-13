@@ -81,6 +81,20 @@
   scrollbar-width: none;
 }
 
+/* Continuous Marquee for Coordinators Gallery */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 35s linear infinite;
+}
+
 /* Reduced motion considerations */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
