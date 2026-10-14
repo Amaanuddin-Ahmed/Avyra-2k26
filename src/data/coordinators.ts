@@ -105,4 +105,12 @@ export const COORDINATORS: Coordinator[] = [
     imageScale: 1.0,
     imageOrigin: "center 24%",
   },
+  {
+    id: "g-varshuvan-sai",
+    name: "G VARSHUVAN SAI",
+    image: "/images/coordinators/varshuvan-sai.png",
+    imagePosition: "center 22%",
+    imageScale: 1.0,
+    imageOrigin: "center 22%",
+  },
 ];
