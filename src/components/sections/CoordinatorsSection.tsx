@@ -3,13 +3,15 @@ import { motion } from 'framer-motion';
 import { GlassCard } from '../ui/GlassCard';
 import { DiamondStar } from '../ui/DiamondStar';
 import { COORDINATORS } from '../../data/coordinators';
-import { User, Play, Pause, Sparkles } from 'lucide-react';
+import { User, Play, Pause } from 'lucide-react';
 
 export const CoordinatorsSection: React.FC = () => {
   const [isPaused, setIsPaused] = useState(false);
 
-  // Duplicate for seamless infinite marquee loop
-  const marqueeItems = [...COORDINATORS, ...COORDINATORS];
+  // Dynamically ensure the marquee has enough items per half to span wide screens seamlessly
+  const repeatCount = Math.max(2, Math.ceil(12 / COORDINATORS.length));
+  const halfSequence = Array.from({ length: repeatCount }, () => COORDINATORS).flat();
+  const marqueeItems = [...halfSequence, ...halfSequence];
 
   return (
     <section 
@@ -61,7 +63,7 @@ export const CoordinatorsSection: React.FC = () => {
             <button
               onClick={() => setIsPaused(!isPaused)}
               aria-label={isPaused ? "Resume movement" : "Pause movement"}
-              className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold uppercase tracking-wider text-silver hover:text-white transition-colors"
+              className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold uppercase tracking-wider text-silver hover:text-white transition-colors cursor-pointer"
             >
               {isPaused ? <Play size={13} /> : <Pause size={13} />}
               <span>{isPaused ? "Resume Stream" : "Pause Stream"}</span>
@@ -90,36 +92,41 @@ export const CoordinatorsSection: React.FC = () => {
             {marqueeItems.map((coord, idx) => (
               <div 
                 key={`${coord.id}-${idx}`}
-                className="w-56 sm:w-64 shrink-0 group focus-within:ring-2 focus-within:ring-electric rounded-2xl"
+                className="w-52 sm:w-60 shrink-0 group focus-within:ring-2 focus-within:ring-electric rounded-2xl transition-transform duration-300 hover:-translate-y-1"
                 tabIndex={0}
                 onFocus={() => setIsPaused(true)}
                 onBlur={() => setIsPaused(false)}
               >
                 <GlassCard 
                   glow={idx % 5 === 0}
-                  className="p-5 flex flex-col items-center text-center h-full border-white/10 group-hover:border-electric/60"
+                  className="p-4 sm:p-5 flex flex-col items-center text-center h-full border-white/10 group-hover:border-electric/60 transition-all duration-300"
                 >
-                  {/* Square Empty Frame Placeholder for Photo */}
-                  <div className="relative mb-4 w-36 h-36 sm:w-40 sm:h-40 rounded-2xl p-0.5 bg-gradient-to-tr from-electric/40 via-white/20 to-ice/30 shadow-[0_0_15px_rgba(40,107,255,0.25)] group-hover:shadow-[0_0_25px_rgba(40,107,255,0.55)] transition-all">
-                    <div className="w-full h-full rounded-[14px] bg-gradient-to-b from-[#0A1F48]/80 to-[#020817] flex flex-col items-center justify-center border border-white/10 overflow-hidden relative">
-                      {/* Blank frame placeholder */}
-                      <User size={42} className="text-silver/40 group-hover:text-ice group-hover:scale-105 transition-all" />
-                      <span className="text-[10px] uppercase tracking-widest text-silver/50 mt-2 font-mono">
-                        Photo
-                      </span>
+                  {/* Photo Frame */}
+                  <div className="relative mb-4 w-full aspect-[4/5] rounded-xl p-0.5 bg-gradient-to-tr from-electric/40 via-white/20 to-ice/30 shadow-[0_0_15px_rgba(40,107,255,0.25)] group-hover:shadow-[0_0_25px_rgba(40,107,255,0.55)] transition-all">
+                    <div className="w-full h-full rounded-[10px] bg-[#06132D] flex items-center justify-center border border-white/10 overflow-hidden relative">
+                      {coord.image ? (
+                        <img 
+                          src={coord.image} 
+                          alt={coord.name}
+                          loading="lazy"
+                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" 
+                        />
+                      ) : (
+                        <div className="flex flex-col items-center justify-center text-silver/40">
+                          <User size={40} />
+                          <span className="text-[10px] uppercase tracking-widest mt-2 font-mono">
+                            Photo
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    <DiamondStar size={14} className="absolute -top-1 -right-1" />
+                    <DiamondStar size={14} className="absolute -top-1.5 -right-1.5" />
                   </div>
 
-                  {/* Coordinator Name */}
-                  <h3 className="font-serif text-lg sm:text-xl font-bold text-white tracking-wide mt-1 group-hover:text-ice-light transition-colors">
+                  {/* Coordinator Name (Only Photo & Name as requested) */}
+                  <h3 className="font-serif text-sm sm:text-base font-bold text-white tracking-wide group-hover:text-ice transition-colors uppercase leading-snug">
                     {coord.name}
                   </h3>
-
-                  {/* Unified Title */}
-                  <span className="text-xs font-semibold uppercase tracking-wider text-ice bg-electric/15 px-3 py-1 rounded-full border border-electric/30 mt-2">
-                    {coord.role}
-                  </span>
                 </GlassCard>
               </div>
             ))}
