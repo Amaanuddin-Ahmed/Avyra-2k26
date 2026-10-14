@@ -67,4 +67,16 @@ export const COORDINATORS: Coordinator[] = [
     image: "/images/coordinators/pravallika.jpg",
     imagePosition: "center 45%",
   },
+  {
+    id: "mohammed-sayeed-anwer",
+    name: "MOHAMMED SAYEED ANWER",
+    image: "/images/coordinators/sayeed-anwer.png",
+    imagePosition: "68% 30%",
+  },
+  {
+    id: "amaanuddin-ahmed",
+    name: "AMAANUDDIN AHMED",
+    image: "/images/coordinators/amaanuddin-ahmed.jpg",
+    imagePosition: "center 20%",
+  },
 ];
