@@ -92,26 +92,32 @@ export const CoordinatorsSection: React.FC = () => {
             {marqueeItems.map((coord, idx) => (
               <div 
                 key={`${coord.id}-${idx}`}
-                className="w-52 sm:w-60 shrink-0 group focus-within:ring-2 focus-within:ring-electric rounded-2xl transition-transform duration-300 hover:-translate-y-1"
+                className="w-56 sm:w-64 h-[380px] sm:h-[410px] shrink-0 group focus-within:ring-2 focus-within:ring-electric rounded-2xl transition-transform duration-300 hover:-translate-y-1.5 flex flex-col"
                 tabIndex={0}
                 onFocus={() => setIsPaused(true)}
                 onBlur={() => setIsPaused(false)}
               >
                 <GlassCard 
                   glow={idx % 5 === 0}
-                  className="p-4 sm:p-5 flex flex-col items-center text-center h-full border-white/10 group-hover:border-electric/60 transition-all duration-300"
+                  className="p-4 sm:p-5 flex flex-col items-center justify-between text-center h-full w-full border-white/10 group-hover:border-electric/60 transition-all duration-300"
                 >
-                  {/* Photo Frame */}
-                  <div className="relative mb-4 w-full aspect-[4/5] rounded-xl p-0.5 bg-gradient-to-tr from-electric/40 via-white/20 to-ice/30 shadow-[0_0_15px_rgba(40,107,255,0.25)] group-hover:shadow-[0_0_25px_rgba(40,107,255,0.55)] transition-all">
+                  {/* Photo Frame (Strict identical 4:5 aspect ratio) */}
+                  <div className="relative w-full aspect-[4/5] rounded-xl p-0.5 bg-gradient-to-tr from-electric/40 via-white/20 to-ice/30 shadow-[0_0_15px_rgba(40,107,255,0.25)] group-hover:shadow-[0_0_25px_rgba(40,107,255,0.55)] transition-all shrink-0">
                     <div className="w-full h-full rounded-[10px] bg-[#06132D] flex items-center justify-center border border-white/10 overflow-hidden relative">
                       {coord.image ? (
-                        <img 
-                          src={coord.image} 
-                          alt={coord.name}
-                          loading="lazy"
-                          style={{ objectPosition: coord.imagePosition || 'center top' }}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                        />
+                        <div className="w-full h-full overflow-hidden flex items-center justify-center transition-transform duration-500 group-hover:scale-[1.04]">
+                          <img 
+                            src={coord.image} 
+                            alt={coord.name}
+                            loading="lazy"
+                            style={{ 
+                              objectPosition: coord.imagePosition || 'center top',
+                              transform: `scale(${coord.imageScale || 1})`,
+                              transformOrigin: coord.imageOrigin || coord.imagePosition || 'center top',
+                            }}
+                            className="w-full h-full object-cover" 
+                          />
+                        </div>
                       ) : (
                         <div className="flex flex-col items-center justify-center text-silver/40">
                           <User size={40} />
@@ -124,10 +130,12 @@ export const CoordinatorsSection: React.FC = () => {
                     <DiamondStar size={14} className="absolute -top-1.5 -right-1.5" />
                   </div>
 
-                  {/* Coordinator Name (Only Photo & Name as requested) */}
-                  <h3 className="font-serif text-sm sm:text-base font-bold text-white tracking-wide group-hover:text-ice transition-colors uppercase leading-snug">
-                    {coord.name}
-                  </h3>
+                  {/* Coordinator Name (Uniform height container so all decks are identical) */}
+                  <div className="w-full h-14 sm:h-16 flex items-center justify-center text-center px-1 shrink-0 mt-3">
+                    <h3 className="font-serif text-sm sm:text-base font-bold text-white tracking-wide group-hover:text-ice transition-colors uppercase leading-snug line-clamp-2">
+                      {coord.name}
+                    </h3>
+                  </div>
                 </GlassCard>
               </div>
             ))}
