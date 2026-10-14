@@ -109,7 +109,8 @@ export const CoordinatorsSection: React.FC = () => {
                           src={coord.image} 
                           alt={coord.name}
                           loading="lazy"
-                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" 
+                          style={{ objectPosition: coord.imagePosition || 'center top' }}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                         />
                       ) : (
                         <div className="flex flex-col items-center justify-center text-silver/40">
