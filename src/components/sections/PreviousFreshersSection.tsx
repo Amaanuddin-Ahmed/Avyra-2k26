@@ -2,26 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { DiamondStar } from '../ui/DiamondStar';
 import { Sparkles, FolderHeart, ArrowUpRight } from 'lucide-react';
+import { GALLERY_PHOTOS } from '../../data/gallery';
 
 export const PreviousFreshersSection: React.FC = () => {
   const DRIVE_FOLDER_URL = "https://drive.google.com/drive/folders/1R9VUv49iLd3bsOPnFomaB88PQBQcvYpv?usp=sharing";
 
-  // Real continuous stream of photos extracted from the actual Google Drive folder
-  const drivePhotos = [
-    { id: 1, src: "/images/gallery/drive-photo-1.jpg", alt: "Freshers Celebration Highlight 01" },
-    { id: 2, src: "/images/gallery/drive-photo-2.jpg", alt: "Freshers Celebration Highlight 02" },
-    { id: 3, src: "/images/gallery/drive-photo-3.jpg", alt: "Freshers Celebration Highlight 03" },
-    { id: 4, src: "/images/gallery/drive-photo-4.jpg", alt: "Freshers Celebration Highlight 04" },
-    { id: 5, src: "/images/gallery/drive-photo-5.jpg", alt: "Freshers Celebration Highlight 05" },
-    { id: 6, src: "/images/gallery/drive-photo-6.jpg", alt: "Freshers Celebration Highlight 06" },
-    { id: 7, src: "/images/gallery/drive-photo-7.jpg", alt: "Freshers Celebration Highlight 07" },
-    { id: 8, src: "/images/gallery/drive-photo-8.jpg", alt: "Freshers Celebration Highlight 08" },
-    { id: 9, src: "/images/gallery/drive-photo-9.jpg", alt: "Freshers Celebration Highlight 09" },
-    { id: 10, src: "/images/gallery/drive-photo-10.jpg", alt: "Freshers Celebration Highlight 10" },
-  ];
-
   // Duplicate for seamless infinite continuous loop
-  const continuousStream = [...drivePhotos, ...drivePhotos];
+  const continuousStream = [...GALLERY_PHOTOS, ...GALLERY_PHOTOS];
 
   return (
     <section 
@@ -65,20 +52,20 @@ export const PreviousFreshersSection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mt-3 text-base sm:text-xl text-silver-light font-light max-w-2xl mx-auto"
           >
-            Unforgettable memories, boundless energy, and the legacy of CSE 1.
+            OG's of MGIT celebrating AVYRA — unforgettable memories, boundless energy, and the legacy of CSE 1.
           </motion.p>
         </div>
 
-        {/* CONTINUOUS PHOTO STREAM (Infinite marquee without categories, fast pace like coordinators) */}
+        {/* CONTINUOUS PHOTO STREAM (Infinite marquee - real photos from Google Drive) */}
         <div className="relative w-full overflow-hidden py-4">
           {/* Edge Gradient Fades */}
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-[#020817] to-transparent z-20" />
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-[#020817] to-transparent z-20" />
 
-          <div className="flex items-center gap-6 w-max animate-marquee hover:[animation-play-state:paused]">
+          <div className="flex items-center gap-6 w-max animate-marquee-gallery hover:[animation-play-state:paused]">
             {continuousStream.map((item, idx) => (
               <div 
-                key={`${item.id}-${idx}`}
+                key={`${item.num}-${idx}`}
                 className="w-72 sm:w-88 shrink-0 group rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10 hover:border-electric/70 transition-all duration-300"
               >
                 <div className="relative aspect-[16/11] w-full overflow-hidden bg-[#0A1F48]">
@@ -87,6 +74,7 @@ export const PreviousFreshersSection: React.FC = () => {
                     alt={item.alt}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
+                    referrerPolicy="no-referrer"
                   />
                   {/* Subtle glass reflection edge */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#020817]/70 via-transparent to-transparent pointer-events-none" />
@@ -165,7 +153,7 @@ export const PreviousFreshersSection: React.FC = () => {
             </h3>
 
             <p className="mt-3 text-base sm:text-lg text-silver-light font-light max-w-xl mx-auto">
-              “Capturing today's memories for tomorrow.”
+              "Capturing today's memories for tomorrow."
             </p>
           </div>
         </motion.div>

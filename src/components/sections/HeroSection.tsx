@@ -110,16 +110,16 @@ export const HeroSection: React.FC = () => {
             {/* Background Aura */}
             <div className="absolute inset-0 bg-electric/25 blur-[55px] rounded-full scale-125 pointer-events-none" />
 
-            <h1 className="relative font-serif text-6xl sm:text-8xl md:text-9xl lg:text-[145px] font-black tracking-wider uppercase leading-none select-none">
-              {/* Metallic Glass Text Styling */}
-              <span className="metallic-text drop-shadow-[0_10px_25px_rgba(3,8,23,0.9)] relative inline-block">
+            <h1 className="relative font-serif text-7xl sm:text-9xl md:text-[140px] lg:text-[170px] font-black tracking-wider uppercase leading-none select-none">
+              {/* Crystal Gradient Text - matching poster aesthetic */}
+              <span className="crystal-text relative inline-block">
                 AVYRA
                 {/* Embedded Diamond Flares on Letter Accents */}
                 <span className="absolute top-[32%] left-[12%] -translate-x-1/2 -translate-y-1/2">
-                  <DiamondStar size={20} />
+                  <DiamondStar size={22} />
                 </span>
                 <span className="absolute top-[18%] right-[22%] -translate-x-1/2 -translate-y-1/2">
-                  <DiamondStar size={18} />
+                  <DiamondStar size={20} />
                 </span>
               </span>
             </h1>

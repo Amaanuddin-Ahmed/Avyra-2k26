@@ -56,6 +56,53 @@
   filter: drop-shadow(0 2px 10px rgba(40, 107, 255, 0.5));
 }
 
+/* Crystal 3D Text Effect - AVYRA poster style */
+.crystal-text {
+  background: linear-gradient(
+    180deg,
+    #FFFFFF 0%,
+    #D4E8FF 12%,
+    #7BB8FF 28%,
+    #286BFF 45%,
+    #1A4FCC 55%,
+    #5B9FFF 68%,
+    #B8DCFF 82%,
+    #FFFFFF 92%,
+    #8EBFFF 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 4px 20px rgba(40, 107, 255, 0.7)) drop-shadow(0 8px 40px rgba(40, 107, 255, 0.4));
+  -webkit-text-stroke: 0.5px rgba(142, 191, 255, 0.15);
+}
+
+/* Deep 3D Crystal Block Text for Aeroplane Wordmark & Hero Titles */
+.crystal-3d-text {
+  background: linear-gradient(
+    180deg,
+    #FFFFFF 0%,
+    #E8F2FF 15%,
+    #A3CDFF 30%,
+    #3D82FF 48%,
+    #1E56D0 52%,
+    #68A5FF 70%,
+    #D0E5FF 85%,
+    #FFFFFF 95%,
+    #8EBFFF 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: 
+    drop-shadow(0 1px 0px #8EBFFF)
+    drop-shadow(0 2px 0px #286BFF)
+    drop-shadow(0 3px 0px #1A4FCC)
+    drop-shadow(0 4px 1px #0A256E)
+    drop-shadow(0 6px 12px rgba(40, 107, 255, 0.8))
+    drop-shadow(0 12px 30px rgba(3, 8, 23, 0.9));
+}
+
 .metallic-text-silver {
   background: linear-gradient(135deg, #FFFFFF 0%, #D8E5F8 30%, #9EB8E0 70%, #FFFFFF 100%);
   -webkit-background-clip: text;
@@ -97,6 +144,11 @@
 
 .animate-marquee-fast {
   animation: marquee 16s linear infinite;
+}
+
+/* Gallery marquee: faster for 44+ photo cards */
+.animate-marquee-gallery {
+  animation: marquee 45s linear infinite;
 }
 
 /* Reduced motion considerations */

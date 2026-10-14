@@ -33,75 +33,91 @@ export const ScheduleSection: React.FC = () => {
   // 1. CONTINUOUS DOWNWARD DESCENT (top: Y movement down through Decks 1 to 7)
   const topAvyra = useTransform(
     scrollYProgress,
-    [0.0, 0.166, 0.333, 0.50, 0.666, 0.833, 1.0, 1.06],
-    ["6%", "21%", "35%", "50%", "65%", "79%", "94%", "100%"]
+    [0.0, 0.083, 0.166, 0.25, 0.333, 0.416, 0.50, 0.583, 0.666, 0.75, 0.833, 0.916, 1.0, 1.06],
+    ["7%", "14%", "21.5%", "28.5%", "36%", "43%", "50.5%", "57.5%", "65%", "72%", "79.5%", "86.5%", "94%", "100%"]
   );
 
-  // 2. HORIZONTAL ALTERNATION (x: flies into empty space beside each deck)
-  // Deck 1 (Left card) -> AVYRA on Right (+250px)
-  // Deck 2 (Right card) -> AVYRA on Left (-250px)
-  // Deck 3 (Left card) -> AVYRA on Right (+250px)
-  // Deck 4 (Right card) -> AVYRA on Left (-250px)
-  // Deck 5 (Left card) -> AVYRA on Right (+250px)
-  // Deck 6 (Right card) -> AVYRA on Left (-250px)
-  // Deck 7 (Left card) -> AVYRA on Right (+250px)
-  const xAvyra = useTransform(
+  // 2. HORIZONTAL POSITIONING (left: sits EXACTLY in the empty space column)
+  // Container width is 100%. Center line is at 50%.
+  // Left column center = 25% | Right column center = 75%
+  // Deck 1 (Card LEFT)  -> Aeroplane centered at 75% (Right empty space)
+  // Deck 2 (Card RIGHT) -> Aeroplane centered at 25% (Left empty space)
+  // Deck 3 (Card LEFT)  -> Aeroplane centered at 75% (Right empty space)
+  // Deck 4 (Card RIGHT) -> Aeroplane centered at 25% (Left empty space)
+  // Deck 5 (Card LEFT)  -> Aeroplane centered at 75% (Right empty space)
+  // Deck 6 (Card RIGHT) -> Aeroplane centered at 25% (Left empty space)
+  // Deck 7 (Card LEFT)  -> Aeroplane centered at 75% (Right empty space)
+  const leftAvyra = useTransform(
     scrollYProgress,
     [
-      0.0,    // Deck 1: Right empty space
-      0.08,   // Banking turn across timeline
-      0.166,  // Deck 2: Left empty space
-      0.25,   // Banking turn across timeline
-      0.333,  // Deck 3: Right empty space
-      0.416,  // Banking turn across timeline
-      0.50,   // Deck 4: Left empty space
-      0.583,  // Banking turn across timeline
-      0.666,  // Deck 5: Right empty space
-      0.75,   // Banking turn across timeline
-      0.833,  // Deck 6: Left empty space
-      0.916,  // Banking turn across timeline
-      1.0,    // Deck 7: Right empty space
-      1.06    // Final departure dive
+      0.0,    // Deck 1: Centered in Right empty space
+      0.083,  // Banking turn crossing center line (50%)
+      0.166,  // Deck 2: Centered in Left empty space
+      0.25,   // Banking turn crossing center line (50%)
+      0.333,  // Deck 3: Centered in Right empty space
+      0.416,  // Banking turn crossing center line (50%)
+      0.50,   // Deck 4: Centered in Left empty space
+      0.583,  // Banking turn crossing center line (50%)
+      0.666,  // Deck 5: Centered in Right empty space
+      0.75,   // Banking turn crossing center line (50%)
+      0.833,  // Deck 6: Centered in Left empty space
+      0.916,  // Banking turn crossing center line (50%)
+      1.0,    // Deck 7: Centered in Right empty space
+      1.06    // Final departure: supersonic exit to the right
     ],
     [
-      "25%", "-2%", "-25%", "2%", "25%", "-2%", "-25%", "2%", "25%", "-2%", "-25%", "2%", "25%", "35%"
+      "75%", "50%", "25%", "50%", "75%", "50%", "25%", "50%", "75%", "50%", "25%", "50%", "75%", "95%"
     ]
   );
 
-  // 3. AEROPLANE BANKING ROLL (rotateZ: banks in the direction of lateral flight)
+  // 3. 3D YAW / FUSELAGE HEADING (rotateY: nose turns in direction of flight)
+  // Turning left to reach left side: -28deg
+  // Turning right to reach right side: +28deg
+  // Stationed in waypoint: 0deg
+  const yawAvyra = useTransform(
+    scrollYProgress,
+    [
+      0.0, 0.083, 0.166, 0.25, 0.333, 0.416, 0.50, 0.583, 0.666, 0.75, 0.833, 0.916, 1.0, 1.06
+    ],
+    [
+      0, -28, 0, 28, 0, -28, 0, 28, 0, -28, 0, 28, 0, 35
+    ]
+  );
+
+  // 4. AEROPLANE BANKING ROLL (rotateZ: banks in the direction of lateral flight)
   const rollAvyra = useTransform(
     scrollYProgress,
     [
-      0.0, 0.08, 0.166, 0.25, 0.333, 0.416, 0.50, 0.583, 0.666, 0.75, 0.833, 0.916, 1.0, 1.06
+      0.0, 0.083, 0.166, 0.25, 0.333, 0.416, 0.50, 0.583, 0.666, 0.75, 0.833, 0.916, 1.0, 1.06
     ],
     [
-      0, -18, 0, 18, 0, -18, 0, 18, 0, -18, 0, 18, 0, 26
+      0, -16, 0, 16, 0, -16, 0, 16, 0, -16, 0, 16, 0, 24
     ]
   );
 
-  // 4. AEROPLANE NOSE-DOWN DIVE PITCH (rotateX: dips down as it travels between decks)
+  // 5. AEROPLANE NOSE-DOWN DIVE PITCH (rotateX: dips nose forward during descent between decks)
   const pitchAvyra = useTransform(
     scrollYProgress,
     [
-      0.0, 0.08, 0.166, 0.25, 0.333, 0.416, 0.50, 0.583, 0.666, 0.75, 0.833, 0.916, 1.0, 1.06
+      0.0, 0.083, 0.166, 0.25, 0.333, 0.416, 0.50, 0.583, 0.666, 0.75, 0.833, 0.916, 1.0, 1.06
     ],
     [
-      0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 32
+      0, 18, 0, 18, 0, 18, 0, 18, 0, 18, 0, 18, 0, 30
     ]
   );
 
-  // 5. OPACITY: Stays fully visible through 7th deck, then disappears completely!
+  // 6. OPACITY: Fully visible throughout all 7 decks, then smoothly disappears completely after Deck 7!
   const opacityAvyra = useTransform(
     scrollYProgress,
-    [0.0, 0.95, 1.0, 1.04, 1.07],
-    [1, 1, 1, 0.6, 0]
+    [0.0, 0.96, 1.0, 1.04, 1.07],
+    [1, 1, 1, 0.5, 0]
   );
 
-  // 6. SCALE: Slight aerodynamic depth scaling during flight, shrinks upon exit
+  // 7. SCALE: Aerodynamic depth scaling during flight, shrinks upon exit
   const scaleAvyra = useTransform(
     scrollYProgress,
-    [0.0, 0.5, 0.95, 1.0, 1.07],
-    [1.0, 1.05, 1.0, 0.95, 0.4]
+    [0.0, 0.5, 0.96, 1.0, 1.07],
+    [1.0, 1.05, 1.0, 0.95, 0.3]
   );
 
   const iconMap = {
@@ -175,14 +191,16 @@ export const ScheduleSection: React.FC = () => {
             <motion.div
               style={{
                 top: topAvyra,
-                left: "50%",
-                x: xAvyra,
+                left: leftAvyra,
+                x: "-50%",
+                y: "-50%",
+                rotateY: yawAvyra,
                 rotateZ: rollAvyra,
                 rotateX: pitchAvyra,
                 scale: scaleAvyra,
                 opacity: opacityAvyra,
               }}
-              className="hidden md:flex pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 z-30 select-none items-center justify-center will-change-transform"
+              className="hidden md:flex pointer-events-none absolute z-30 select-none items-center justify-center will-change-transform [perspective:1200px]"
               aria-hidden="true"
             >
               {/* Supersonic 3D Aeroplane Chassis */}
@@ -223,7 +241,7 @@ export const ScheduleSection: React.FC = () => {
                     <DiamondStar size={16} className="absolute -top-2 -left-4 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
                     <DiamondStar size={14} className="absolute -bottom-1 -right-4 text-cyan-300 drop-shadow-[0_0_8px_rgba(56,189,248,0.9)]" />
 
-                    <span className="font-serif text-3xl sm:text-4xl md:text-5xl font-black tracking-[0.25em] uppercase metallic-text drop-shadow-[0_4px_22px_rgba(40,107,255,0.95)]">
+                    <span className="font-serif text-3xl sm:text-4xl md:text-5xl font-black tracking-[0.25em] uppercase crystal-3d-text">
                       AVYRA
                     </span>
                   </div>

@@ -1,95 +1,198 @@
-// Node script to extract image IDs from cached Drive HTML and download selected images
-// Run with: node scripts/fetchDriveImages.js
+// Extract SDQ file IDs from cached Drive HTML
+// Then download selected photos from Google Drive
 import fs from 'fs';
 import path from 'path';
 import https from 'https';
-import { pipeline } from 'stream';
-import { promisify } from 'util';
-const streamPipeline = promisify(pipeline);
+import http from 'http';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Path to cached Drive folder HTML (captured in step 517)
-const cachedHtmlPath = path.resolve('C:/Users/DELL/.gemini/antigravity/brain/7023d3c9-02ec-45a4-816a-5f7952f48a13/.system_generated/steps/517/content.md');
-if (!fs.existsSync(cachedHtmlPath)) {
-  console.error('Cached HTML not found at', cachedHtmlPath);
-  process.exit(1);
-}
-
+const cachedHtmlPath = 'C:/Users/DELL/.gemini/antigravity/brain/7023d3c9-02ec-45a4-816a-5f7952f48a13/.system_generated/steps/517/content.md';
 const html = fs.readFileSync(cachedHtmlPath, 'utf8');
 
-// User‑provided list of sdq codes (four‑digit numbers, may include leading zeros)
-const sdqList = [
-  "0867","0087","0091","0098","0191","0192","0193","0194","0195","0196","0197","0198","0199","0200","0201","0202","0203","0204","0205","0206","0207","0208","0209","0210","0211","0212","0213","0214","0215","0216","0217","0218","0219","0220","0221","0222","0223","0224","0225","0226","0227","0228","0229","0230","0231","0232","0233","0234","0235","0236","0237","0238","0239","0240","0241","0242","0243","0244","0245","0246","0247","0248","0249","0250","0251","0252","0253","0254","0255","0256","0257","0258","0259","0260","0261","0262","0263","0264","0265","0266","0267","0268","0269","0270","0271","0272","0273","0274","0275","0276","0277","0278","0279","0280","0281","0282","0283","0284","0285","0286","0287","0288","0289","0290","0291","0292","0293","0294","0295","0296","0297","0298","0299","0300","0301","0302","0303","0304","0305","0306","0307","0308","0309","0310","0311","0312","0313","0314","0315","0316","0317","0318","0319","0320","0321","0322","0323","0324","0325","0326","0327","0328","0329","0330","0331","0332","0333","0334","0335","0336","0337","0338","0339","0340","0341","0342","0343","0344","0345","0346","0347","0348","0349","0350","0351","0352","0353","0354","0355","0356","0357","0358","0359","0360","0361","0362","0363","0364","0365","0366","0367","0368","0369","0370","0371","0372","0373","0374","0375","0376","0377","0378","0379","0380","0381","0382","0383","0384","0385","0386","0387","0388","0389","0390","0391","0392","0393","0394","0395","0396","0397","0398","0399","0400","0401","0402","0403","0404","0405","0406","0407","0408","0409","0410","0411","0412","0413","0414","0415","0416","0417","0418","0419","0420","0421","0422","0423","0424","0425","0426","0427","0428","0429","0430","0431","0432","0433","0434","0435","0436","0437","0438","0439","0440","0441","0442","0443","0444","0445","0446","0447","0448","0449","0450","0451","0452","0453","0454","0455","0456","0457","0458","0459","0460","0461","0462","0463","0464","0465","0466","0467","0468","0469","0470","0471","0472","0473","0474","0475","0476","0477","0478","0479","0480","0481","0482","0483","0484","0485","0486","0487","0488","0489","0490","0491","0492","0493","0494","0495","0496","0497","0498","0499","0500","0501","0502","0503","0504","0505","0506","0507","0508","0509","0510","0511","0512","0513","0514","0515","0516","0517","0518","0519","0520","0521","0522","0523","0524","0525","0526","0527","0528","0529","0530","0531","0532","0533","0534","0535","0536","0537","0538","0539","0540","0541","0542","0543","0544","0545","0546","0547","0548","0549","0550","0551","0552","0553","0554","0555","0556","0557","0558","0559","0560","0561","0562","0563","0564","0565","0566","0567","0568","0569","0570","0571","0572","0573","0574","0575","0576","0577","0578","0579","0580","0581","0582","0583","0584","0585","0586","0587","0588","0589","0590","0591","0592","0593","0594","0595","0596","0597","0598","0599","0600","0601","0602","0603","0604","0605","0606","0607","0608","0609","0610","0611","0612","0613","0614","0615","0616","0617","0618","0619","0620","0621","0622","0623","0624","0625","0626","0627","0628","0629","0630","0631","0632","0633","0634","0635","0636","0637","0638","0639","0640","0641","0642","0643","0644","0645","0646","0647","0648","0649","0650","0651","0652","0653","0654","0655","0656","0657","0658","0659","0660","0661","0662","0663","0664","0665","0666","0667","0668","0669","0670","0671","0672","0673","0674","0675","0676","0677","0678","0679","0680","0681","0682","0683","0684","0685","0686","0687","0688","0689","0690","0691","0692","0693","0694","0695","0696","0697","0698","0699","0700","0701","0702","0703","0704","0705","0706","0707","0708","0709","0710","0711","0712","0713","0714","0715","0716","0717","0718","0719","0720","0721","0722","0723","0724","0725","0726","0727","0728","0729","0730","0731","0732","0733","0734","0735","0736","0737","0738","0739","0740","0741","0742","0743","0744","0745","0746","0747","0748","0749","0750","0751","0752","0753","0754","0755","0756","0757","0758","0759","0760","0761","0762","0763","0764","0765","0766","0767","0768","0769","0770","0771","0772","0773","0774","0775","0776","0777","0778","0779","0780","0781","0782","0783","0784","0785","0786","0787","0788","0789","0790","0791","0792","0793","0794","0795","0796","0797","0798","0799","0800","0801","0802","0803","0804","0805","0806","0807","0808","0809","0810","0811","0812","0813","0814","0815","0816","0817","0818","0819","0820","0821","0822","0823","0824","0825","0826","0827","0828","0829","0830","0831","0832","0833","0834","0835","0836","0837","0838","0839","0840","0841","0842","0843","0844","0845","0846","0847","0848","0849","0850","0851","0852","0853","0854","0855","0856","0857","0858","0859","0860","0861","0862","0863","0864","0865","0866","0867","0870","0910","0991","0098","0199","0231","0237","0238","0239","0240","0241","0242","0243","0244","0245","0246","0247","0248","0249","0250","0251","0252","0253","0254","0255","0256","0257","0258","0259","0260","0261","0262","0263","0264","0265","0266","0267","0268","0269","0270","0271","0272","0273","0274","0275","0276","0277","0278","0279","0280","0281","0282","0283","0284","0285","0286","0287","0288","0289","0290","0291","0292","0293","0294","0295","0296","0297","0298","0299","0300","0301","0302","0303","0304","0305","0306","0307","0308","0309","0310","0311","0312","0313","0314","0315","0316","0317","0318","0319","0320","0321","0322","0323","0324","0325","0326","0327","0328","0329","0330","0331","0332","0333","0334","0335","0336","0337","0338","0339","0340","0341","0342","0343","0344","0345","0346","0347","0348","0349","0350","0351","0352","0353","0354","0355","0356","0357","0358","0359","0360","0361","0362","0363","0364","0365","0366","0367","0368","0369","0370","0371","0372","0373","0374","0375","0376","0377","0378","0379","0380","0381","0382","0383","0384","0385","0386","0387","0388","0389","0390","0391","0392","0393","0394","0395","0396","0397","0398","0399","0400","0401","0402","0403","0404","0405","0406","0407","0408","0409","0410","0411","0412","0413","0414","0415","0416","0417","0418","0419","0420","0421","0422","0423","0424","0425","0426","0427","0428","0429","0430","0431","0432","0433","0434","0435","0436","0437","0438","0439","0440","0441","0442","0443","0444","0445","0446","0447","0448","0449","0450","0451","0452","0453","0454","0455","0456","0457","0458","0459","0460","0461","0462","0463","0464","0465","0466","0467","0468","0469","0470","0471","0472","0473","0474","0475","0476","0477","0478","0479","0480","0481","0482","0483","0484","0485","0486","0487","0488","0489","0490","0491","0492","0493","0494","0495","0496","0497","0498","0499","0500","0501","0502","0503","0504","0505","0506","0507","0508","0509","0510","0511","0512","0513","0514","0515","0516","0517","0518","0519","0520","0521","0522","0523","0524","0525","0526","0527","0528","0529","0530","0531","0532","0533","0534","0535","0536","0537","0538","0539","0540","0541","0542","0543","0544","0545","0546","0547","0548","0549","0550","0551","0552","0553","0554","0555","0556","0557","0558","0559","0560","0561","0562","0563","0564","0565","0566","0567","0568","0569","0570","0571","0572","0573","0574","0575","0576","0577","0578","0579","0580","0581","0582","0583","0584","0585","0586","0587","0588","0589","0590","0591","0592","0593","0594","0595","0596","0597","0598","0599","0600","0601","0602","0603","0604","0605","0606","0607","0608","0609","0610","0611","0612","0613","0614","0615","0616","0617","0618","0619","0620","0621","0622","0623","0624","0625","0626","0627","0628","0629","0630","0631","0632","0633","0634","0635","0636","0637","0638","0639","0640","0641","0642","0643","0644","0645","0646","0647","0648","0649","0650","0651","0652","0653","0654","0655","0656","0657","0658","0659","0660","0661","0662","0663","0664","0665","0666","0667","0668","0669","0670","0671","0672","0673","0674","0675","0676","0677","0678","0679","0680","0681","0682","0683","0684","0685","0686","0687","0688","0689","0690","0691","0692","0693","0694","0695","0696","0697","0698","0699","0700","0701","0702","0703","0704","0705","0706","0707","0708","0709","0710","0711","0712","0713","0714","0715","0716","0717","0718","0719","0720","0721","0722","0723","0724","0725","0726","0727","0728","0729","0730","0731","0732","0733","0734","0735","0736","0737","0738","0739","0740","0741","0742","0743","0744","0745","0746","0747","0748","0749","0750","0751","0752","0753","0754","0755","0756","0757","0758","0759","0760","0761","0762","0763","0764","0765","0766","0767","0768","0769","0770","0771","0772","0773","0774","0775","0776","0777","0778","0779","0780","0781","0782","0783","0784","0785","0786","0787","0788","0789","0790","0791","0792","0793","0794","0795","0796","0797","0798","0799","0800","0801","0802","0803","0804","0805","0806","0807","0808","0809","0810","0811","0812","0813","0814","0815","0816","0817","0818","0819","0820","0821","0822","0823","0824","0825","0826","0827","0828","0829","0830","0831","0832","0833","0834","0835","0836","0837","0838","0839","0840","0841","0842","0843","0844","0845","0846","0847","0848","0849","0850","0851","0852","0853","0854","0855","0856","0857","0858","0859","0860","0861","0862","0863","0864","0865","0866","0867","0870","0910","0991","0098"]
+// The user's requested SDQ numbers (from chat history):
+// sdq0867, 87, 91, 98, 919, 931, 37, 38, 53, 59, 65, 68, 87, 1041, 56, 62, 73, 78, 85, 88, 90, 93, 96, 
+// 1104, 1111, 1133, 1146, 1148, 1157, 1159, 1169, 1172, 1187, 1194, 1202, 1210, 1216, 1222, 1224, 1238, 
+// 1264, 1274, 1278, 1295, 1306, 1307, 1302, 1361, 1262, 1366, 1381, 1382, 1393, 1395, 1417, 1424, 1440, 
+// 1454, 1459, 1460, 1463, 1467, 1468, 71
+const wantedNumbers = [
+  867, 87, 91, 98, 919, 931, 37, 38, 53, 59, 65, 68,
+  1041, 56, 62, 73, 78, 85, 88, 90, 93, 96,
+  1104, 1111, 1133, 1146, 1148, 1157, 1159, 1169, 1172, 1187, 1194,
+  1202, 1210, 1216, 1222, 1224, 1238, 1264, 1274, 1278, 1295,
+  1306, 1307, 1302, 1361, 1262, 1366, 1381, 1382, 1393, 1395,
+  1417, 1424, 1440, 1454, 1459, 1460, 1463, 1467, 1468, 71
+];
 
+// Normalize to 4-digit zero-padded strings
+const wantedSet = new Set(wantedNumbers.map(n => String(n).padStart(4, '0')));
+console.log(`Looking for ${wantedSet.size} unique SDQ photos`);
 
-// Helper to extract file IDs and filenames from the HTML using regex
-function extractFiles(htmlContent) {
-  const regex = /data-id="([^"]+)"[^>]*>\s*<div[^>]*class="[^"]*\bdrive-collection\b[^>]*>.*?<_?\b([^<\s]+)\b/gms;
-  // The Drive HTML structure is complex; we fallback to a simpler pattern that captures filename and id
-  const idRegex = /data-id="([^"]+)"[^>]*>\s*<div[^>]*title="([^"]+)"/g;
-  const files = [];
-  let m;
-  while ((m = idRegex.exec(htmlContent)) !== null) {
-    const id = m[1];
-    const title = m[2]; // e.g., "sdq0867.JPG"
-    files.push({ id, title });
+// Step 1: Find all SDQ entries in the HTML
+// Pattern: aria-label="_SDQ####.JPG ... ssk='5:SOMETHING:SOMETHING:FILE_ID'
+// The ssk attribute contains the file ID embedded within it
+
+// First let's find all SDQ filenames and the surrounding context to understand the ID structure
+const sdqRegex = /_?SDQ(\d{4})\.JPG/gi;
+const allSdqMatches = [];
+let match;
+while ((match = sdqRegex.exec(html)) !== null) {
+  const num = match[1];
+  const start = Math.max(0, match.index - 500);
+  const end = Math.min(html.length, match.index + 500);
+  const context = html.substring(start, end);
+  allSdqMatches.push({ num, index: match.index, context });
+}
+console.log(`Found ${allSdqMatches.length} total SDQ entries in HTML`);
+
+// Let's look at the structure around the first entry to understand how IDs are stored
+if (allSdqMatches.length > 0) {
+  // The SSK attribute format seems to be: ssk='5:KEY:NUMBER:FILE_ID'
+  // Let's try to extract the file ID from the ssk attribute near each SDQ entry
+  
+  // Actually looking at the context more carefully:
+  // The pattern seems like: aria-label="_SDQ0861.JPG Image Shared" ... ssk='5:auSv138:1lTdco32Qx2xpp3VnvFtXb0WAdv2HGsvi-0-16'
+  // But the Google Drive file ID is usually a ~33 character alphanumeric string
+  
+  // Let's look for data-id patterns instead
+  const dataIdRegex = /data-id="([^"]+)"/g;
+  const allDataIds = [];
+  while ((match = dataIdRegex.exec(html)) !== null) {
+    allDataIds.push({ id: match[1], index: match.index });
   }
-  return files;
-}
-
-const allFiles = extractFiles(html);
-if (allFiles.length === 0) {
-  console.error('No files extracted from cached HTML.');
-  process.exit(1);
-}
-
-// Filter for requested sdq codes (case‑insensitive, ignore leading underscores and extensions)
-const requested = new Set(sdqList.map(code => code.padStart(4, '0')));
-const matches = allFiles.filter(f => {
-  const name = f.title.replace(/^_/,'').replace(/\.[^.]+$/,'').toUpperCase();
-  return requested.has(name.replace('SDQ',''));
-});
-
-console.log(`Found ${matches.length} matching files out of ${sdqList.length} requested.`);
-
-// Ensure output directory exists
-const outDir = path.resolve(__dirname, '../public/images/gallery');
-fs.mkdirSync(outDir, { recursive: true });
-
-async function downloadFile(id, filename) {
-  const url = `https://drive.google.com/uc?export=download&id=${id}`;
-  const dest = path.join(outDir, filename);
-  const file = fs.createWriteStream(dest);
-  return new Promise((resolve, reject) => {
-    https.get(url, response => {
-      if (response.statusCode !== 200) {
-        reject(new Error(`Failed to download ${filename}: ${response.statusCode}`));
-        return;
+  console.log(`Found ${allDataIds.length} data-id entries in HTML`);
+  
+  // For each SDQ entry, find the nearest data-id before it
+  const sdqWithIds = [];
+  for (const sdqEntry of allSdqMatches) {
+    // Find the closest data-id that comes before this SDQ entry
+    let closestId = null;
+    let closestDist = Infinity;
+    for (const dataId of allDataIds) {
+      const dist = sdqEntry.index - dataId.index;
+      if (dist > 0 && dist < closestDist) {
+        closestDist = dist;
+        closestId = dataId.id;
       }
-      response.pipe(file);
-      file.on('finish', () => {
-        file.close(() => resolve());
-      });
-    }).on('error', err => {
-      fs.unlink(dest, () => reject(err));
-    });
-  });
-}
-
-(async () => {
-  for (let i = 0; i < matches.length; i++) {
-    const { id, title } = matches[i];
-    const filename = title.replace(/^_/,''); // keep original extension
-    try {
-      await downloadFile(id, filename);
-      console.log(`Downloaded ${filename}`);
-      // Simple rate‑limit pause
-      await new Promise(r => setTimeout(r, 250));
-    } catch (e) {
-      console.error(`Error downloading ${filename}:`, e.message);
+    }
+    // Also check for data-id after (within 2000 chars)
+    if (!closestId || closestDist > 2000) {
+      for (const dataId of allDataIds) {
+        const dist = dataId.index - sdqEntry.index;
+        if (dist > 0 && dist < 2000 && dist < closestDist) {
+          closestDist = dist;
+          closestId = dataId.id;
+        }
+      }
+    }
+    if (closestId && closestDist < 5000) {
+      sdqWithIds.push({ num: sdqEntry.num, id: closestId, dist: closestDist });
     }
   }
-  console.log('All downloads completed.');
-})();
+  
+  console.log(`Mapped ${sdqWithIds.length} SDQ entries to data-ids`);
+  if (sdqWithIds.length > 0) {
+    console.log('Sample:', JSON.stringify(sdqWithIds.slice(0, 3)));
+  }
+  
+  // Filter for wanted photos
+  const wantedPhotos = sdqWithIds.filter(e => wantedSet.has(e.num));
+  // Remove duplicates by num
+  const seen = new Set();
+  const uniqueWanted = wantedPhotos.filter(e => {
+    if (seen.has(e.num)) return false;
+    seen.add(e.num);
+    return true;
+  });
+  
+  console.log(`Found ${uniqueWanted.length} of ${wantedSet.size} wanted photos`);
+  
+  // Save the mapping for download
+  const outDir = path.resolve(__dirname, '../public/images/gallery');
+  fs.mkdirSync(outDir, { recursive: true });
+  
+  // Clean old photos
+  const oldFiles = fs.readdirSync(outDir);
+  for (const f of oldFiles) {
+    fs.unlinkSync(path.join(outDir, f));
+  }
+  console.log(`Cleaned ${oldFiles.length} old files from gallery`);
+  
+  // Write manifest
+  const manifest = uniqueWanted.map((e, i) => ({
+    filename: `SDQ${e.num}.JPG`,
+    driveId: e.id,
+    index: i + 1
+  }));
+  
+  const manifestPath = path.resolve(__dirname, '../public/gallery.json');
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+  console.log(`Wrote manifest with ${manifest.length} entries to gallery.json`);
+  
+  // Download each photo
+  async function downloadFile(fileId, filename) {
+    // Use Google Drive export URL for publicly shared files
+    const url = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    const dest = path.join(outDir, filename);
+    
+    return new Promise((resolve, reject) => {
+      const makeRequest = (requestUrl, redirectCount) => {
+        if (redirectCount > 5) {
+          reject(new Error('Too many redirects'));
+          return;
+        }
+        
+        const protocol = requestUrl.startsWith('https') ? https : http;
+        protocol.get(requestUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } }, response => {
+          // Follow redirects
+          if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
+            makeRequest(response.headers.location, redirectCount + 1);
+            return;
+          }
+          
+          if (response.statusCode !== 200) {
+            reject(new Error(`HTTP ${response.statusCode} for ${filename}`));
+            return;
+          }
+          
+          const file = fs.createWriteStream(dest);
+          response.pipe(file);
+          file.on('finish', () => file.close(() => resolve()));
+          file.on('error', err => {
+            fs.unlink(dest, () => {});
+            reject(err);
+          });
+        }).on('error', err => reject(err));
+      };
+      
+      makeRequest(url, 0);
+    });
+  }
+  
+  (async () => {
+    let downloaded = 0;
+    let failed = 0;
+    for (let i = 0; i < uniqueWanted.length; i++) {
+      const entry = uniqueWanted[i];
+      const filename = `SDQ${entry.num}.JPG`;
+      try {
+        await downloadFile(entry.id, filename);
+        downloaded++;
+        if (downloaded % 10 === 0) console.log(`Downloaded ${downloaded}/${uniqueWanted.length}...`);
+        // Rate limit
+        await new Promise(r => setTimeout(r, 300));
+      } catch (err) {
+        console.error(`Failed ${filename}: ${err.message}`);
+        failed++;
+      }
+    }
+    console.log(`\nDone! Downloaded: ${downloaded}, Failed: ${failed}`);
+    
+    // Update manifest with only successfully downloaded files
+    const finalFiles = fs.readdirSync(outDir).filter(f => f.endsWith('.JPG') || f.endsWith('.jpg'));
+    const finalManifest = finalFiles.map((f, i) => ({ filename: f }));
+    fs.writeFileSync(manifestPath, JSON.stringify(finalManifest, null, 2));
+    console.log(`Final manifest: ${finalManifest.length} photos`);
+  })();
+}
